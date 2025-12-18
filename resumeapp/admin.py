@@ -34,7 +34,7 @@ class AchievementAdmin(admin.ModelAdmin):
 
 @admin.register(UserAchievement)
 class UserAchievementAdmin(admin.ModelAdmin):
-    list_display = ('user', 'achievement', 'unlocked_date')
-    list_filter = ('unlocked_date', 'achievement')
+    list_display = ('user', 'achievement', 'unlocked_at')
+    list_filter = ('unlocked_at', 'achievement')
     search_fields = ('user__username', 'achievement__name')
-    readonly_fields = ('unlocked_date',)
+    readonly_fields = ('unlocked_at',)
