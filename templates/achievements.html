@@ -1,0 +1,127 @@
+﻿{% extends 'index.html' %}
+{% block title %}Achievements - Job Quest{% endblock %}
+{% block content %}
+<main class="container mx-auto px-4 py-12">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header -->
+    <div class="mb-12">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="p-3 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl">
+          <i class="fas fa-trophy text-white text-2xl"></i>
+        </div>
+        <div>
+          <h1 class="text-4xl font-bold text-slate-800">Achievements</h1>
+          <p class="text-slate-600">Unlock badges as you progress in your job search</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      <!-- Progress Card -->
+      <div
+        class="bg-gradient-to-br from-purple-50 to-white border-2 border-purple-200 rounded-3xl p-6 shadow-sm"
+      >
+        <div class="flex items-center gap-2 mb-4">
+          <i class="fas fa-trophy text-purple-600 text-xl"></i>
+          <h2 class="text-xl font-bold text-slate-800">Achievement Progress</h2>
+        </div>
+
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-slate-600">
+              {{ unlocked_count }} of {{ total_count }} unlocked
+            </span>
+            <span class="text-2xl font-bold text-purple-600">
+              {{ completion_percentage }}%
+            </span>
+          </div>
+          <div class="h-4 bg-slate-200 rounded-full overflow-hidden">
+            <div
+              class="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-700"
+              data-width="{{ completion_percentage }}"
+            ></div>
+          </div>
+          <div class="flex justify-between pt-2">
+            <span class="text-sm text-slate-600">Total Points: <strong class="text-purple-600">{{ total_points }}</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Achievements Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for item in achievements %}
+        <div
+          class="relative overflow-hidden bg-white border border-slate-100 rounded-3xl p-6 transition-all {% if item.unlocked %} border-2 border-slate-200 shadow-lg {% else %} opacity-75 grayscale hover:grayscale-0 hover:opacity-100 {% endif %}"
+        >
+          {% if item.unlocked %}
+          <div class="absolute top-4 right-4">
+            <i class="fas fa-check-circle text-green-600 text-xl"></i>
+          </div>
+          {% endif %}
+
+          <div class="flex flex-col items-center text-center space-y-3">
+            <div
+              class="p-4 rounded-full bg-gradient-to-br {{ item.achievement.color_class }} 
+                        {% if not item.unlocked %} opacity-40 {% endif %} text-white text-2xl"
+            >
+              <i class="fas {{ item.achievement.icon_class }}"></i>
+            </div>
+
+            <div class="space-y-1">
+              <h3 class="font-bold text-slate-800">{{ item.achievement.name }}</h3>
+              <p class="text-sm text-slate-600">{{ item.achievement.description }}</p>
+            </div>
+
+            <div class="pt-2">
+              <span class="text-xs font-semibold text-slate-500">{{ item.achievement.points }} XP</span>
+            </div>
+
+            {% if item.unlocked %}
+            <div class="text-xs text-slate-500">
+              Unlocked on {{ item.unlocked_date|date:"M d, Y" }}
+            </div>
+            <span
+              class="px-3 py-1 bg-green-100 text-green-700 border border-green-300 rounded-full text-xs font-bold"
+            >
+              Unlocked!
+            </span>
+            {% endif %}
+          </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full text-center py-12">
+          <p class="text-slate-600 text-lg">No achievements yet. Start adding applications to unlock badges!</p>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Motivational Banner -->
+      <div
+        class="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-3xl p-8 text-center shadow-xl"
+      >
+        <i class="fas fa-medal text-5xl mb-4 opacity-90"></i>
+        <p class="text-xl font-bold mb-1">
+          {% if unlocked_count == total_count %}
+           Congratulations! You've unlocked all achievements!
+          {% else %}
+          Keep going! Your dream job is just around the corner!
+          {% endif %}
+        </p>
+        <p class="text-sm opacity-90">
+          {% if unlocked_count < total_count %}
+          {{ total_count|add:0 }} more achievement(s) to unlock
+          {% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  // Apply progress bar width
+  document.querySelectorAll('[data-width]').forEach(el => {
+    const width = el.dataset.width || '0';
+    el.style.width = width + '%';
+  });
+</script>
+{% endblock %}

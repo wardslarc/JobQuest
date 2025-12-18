@@ -1,0 +1,136 @@
+﻿{% extends 'index.html' %}<!-- B1 -->
+{% block title %}Log In - Job Quest{% endblock %}<!-- B2 -->
+{% block content %}
+<!-- Error Modal -->
+{% if form.non_field_errors %}
+<div
+  id="errorModal"
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4"
+>
+  <div
+    class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-8 animate-fade-in"
+  >
+    <div class="flex items-center justify-center mb-6">
+      <div class="p-3 bg-red-100 rounded-full">
+        <i class="fas fa-exclamation-circle text-red-600 text-2xl"></i>
+      </div>
+    </div>
+    <h3 class="text-2xl font-bold text-center text-slate-900 mb-2">
+      Login Failed
+    </h3>
+    <p class="text-center text-slate-600 mb-6">
+      Please check your username or password and try again.
+    </p>
+    {% for error in form.non_field_errors %}
+    <p class="text-center text-red-600 text-sm mb-4">{{ error }}</p>
+    {% endfor %}
+    <button
+      onclick="document.getElementById('errorModal').style.display='none'"
+      class="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition"
+    >
+      Try Again
+    </button>
+  </div>
+</div>
+{% endif %}
+
+<div class="min-h-[80vh] flex items-center justify-center px-4 py-12">
+  <div
+    class="max-w-md w-full bg-white rounded-3xl shadow-xl border border-slate-100 p-8"
+  >
+    <div class="flex items-center gap-3 mb-2">
+      <div class="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
+        <i class="fas fa-sign-in-alt text-white"></i>
+      </div>
+      <h2 class="text-2xl font-bold">Welcome Back</h2>
+    </div>
+    <p class="text-slate-500 text-sm mb-6">Enter your credentials to continue</p>
+
+    <form method="POST" class="space-y-5">
+      {% csrf_token %}
+      {% if next %}
+      <input type="hidden" name="next" value="{{ next }}" />
+      {% endif %}
+
+      <div>
+        <label for="id_username" class="block text-sm font-semibold text-slate-700 mb-2">Username</label>
+        <div class="relative">
+          <i class="fas fa-user absolute left-3 top-3 text-slate-400"></i>
+          {{ form.username }}
+        </div>
+        {% if form.username.errors %}
+        <p class="text-red-600 text-xs mt-1">{{ form.username.errors.0 }}</p>
+        {% endif %}
+      </div>
+
+      <div>
+        <label for="id_password" class="block text-sm font-semibold text-slate-700 mb-2">Password</label>
+        <div class="relative">
+          <i class="fas fa-lock absolute left-3 top-3 text-slate-400"></i>
+          {{ form.password }}
+        </div>
+        {% if form.password.errors %}
+        <p class="text-red-600 text-xs mt-1">{{ form.password.errors.0 }}</p>
+        {% endif %}
+      </div>
+
+      <button
+        type="submit"
+        class="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold rounded-xl shadow-lg transform active:scale-95 transition mt-6"
+      >
+        <i class="fas fa-sign-in-alt mr-2"></i>Log In
+      </button>
+    </form>
+
+    <div class="mt-6 pt-6 border-t border-slate-200">
+      <p class="text-center text-slate-600 text-sm">
+        Don't have an account?
+        <a href="{% url 'signup' %}" class="text-blue-600 hover:text-blue-700 font-semibold">
+          Sign Up
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  #id_username,
+  #id_password {
+    width: 100%;
+    padding: 0.65rem 1rem 0.65rem 2.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    font-size: 0.95rem;
+    transition: all 0.3s;
+    background-color: #f8fafc;
+  }
+
+  #id_username:hover,
+  #id_password:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+  }
+
+  #id_username:focus,
+  #id_password:focus {
+    outline: none;
+    background-color: white;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+</style>
+{% endblock %}

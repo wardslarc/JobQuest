@@ -1,0 +1,307 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Job Quest - {% block title %}Level Up Your Career{% endblock %}
+    </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50"
+  >
+    <nav
+      class="border-b border-slate-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50"
+    >
+      <div
+        class="container mx-auto px-4 py-4 flex items-center justify-between"
+      >
+        <a href="{% url 'home' %}" class="flex items-center gap-2">
+          <div
+            class="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg"
+          >
+            <i class="fas fa-trophy text-white"></i>
+          </div>
+          <span
+            class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+          >
+            Job Quest
+          </span>
+        </a>
+        <div class="flex items-center gap-3">
+          {% if user.is_authenticated %}
+          <a
+            href="{% url 'dashboard' %}"
+            class="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium"
+            >Dashboard</a
+          >
+          <a
+            href="{% url 'achievements' %}"
+            class="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium"
+            >Achievements</a
+          >
+          <a
+            href="{% url 'leaderboard:leaderboard' %}"
+            class="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium"
+            >Leaderboard</a
+          >
+          <!-- Profile Dropdown -->
+          <div class="relative group">
+            <button
+              class="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium flex items-center gap-2"
+            >
+              <i class="fas fa-user"></i>
+              <i class="fas fa-chevron-down text-xs group-hover:rotate-180 transition"></i>
+            </button>
+            <div
+              class="absolute right-0 mt-0 w-56 bg-white rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200 z-50"
+            >
+              <a
+                href="{% url 'profile' %}"
+                class="block px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600 font-medium rounded-t-xl flex items-center gap-2 border-b border-slate-100"
+              >
+                <i class="fas fa-id-card"></i> View Profile
+              </a>
+              <a
+                href="{% url 'achievements' %}"
+                class="block px-4 py-3 text-slate-700 hover:bg-purple-50 hover:text-purple-600 font-medium flex items-center gap-2 border-b border-slate-100"
+              >
+                <i class="fas fa-trophy"></i> Achievements
+              </a>
+              <div class="border-b border-slate-100">
+                <div class="px-4 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Theme</div>
+                <button
+                  onclick="setTheme('light')"
+                  class="w-full px-4 py-2 text-left text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium flex items-center gap-2"
+                >
+                  <i class="fas fa-sun"></i> Light
+                </button>
+                <button
+                  onclick="setTheme('dark')"
+                  class="w-full px-4 py-2 text-left text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium flex items-center gap-2"
+                >
+                  <i class="fas fa-moon"></i> Dark
+                </button>
+                <button
+                  onclick="setTheme('system')"
+                  class="w-full px-4 py-2 text-left text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium flex items-center gap-2 border-b border-slate-100"
+                >
+                  <i class="fas fa-desktop"></i> System
+                </button>
+              </div>
+              <form action="{% url 'logout' %}" method="post" class="block">
+                {% csrf_token %}
+                <button
+                  type="submit"
+                  class="w-full px-4 py-3 text-left text-red-600 hover:bg-red-50 hover:text-red-700 font-medium rounded-b-xl flex items-center gap-2"
+                >
+                  <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+              </form>
+            </div>
+          </div>
+          {% else %}
+          <a
+            href="{% url 'login' %}"
+            class="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium"
+            >Log In</a
+          >
+          <a
+            href="{% url 'signup' %}"
+            class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+          >
+            Sign Up
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      {% block content %}
+      <section class="container mx-auto px-4 py-20 md:py-32">
+        <div class="max-w-4xl mx-auto text-center space-y-8">
+          <div
+            class="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-semibold"
+          >
+            <i class="fas fa-sparkles text-xs"></i> Gamify Your Job Search
+          </div>
+          <h1 class="text-5xl md:text-7xl font-bold">
+            <span
+              class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+              >Level Up</span
+            >
+            <br />
+            Your Career Search
+          </h1>
+          <p class="text-xl text-slate-600 max-w-2xl mx-auto">
+            Transform your job hunt into an exciting quest. Track applications,
+            earn XP, unlock achievements, and stay motivated on your path to
+            landing your dream job.
+          </p>
+          <div
+            class="flex flex-col sm:flex-row items-center justify-center gap-4"
+          >
+            {% if user.is_authenticated %}
+            <a
+              href="{% url 'dashboard' %}"
+              class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-lg px-8 py-4 rounded-xl font-bold transition shadow-lg"
+            >
+              Start Your Quest
+            </a>
+            {% else %}
+            <a
+              href="{% url 'signup' %}"
+              class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-lg px-8 py-4 rounded-xl font-bold transition shadow-lg"
+            >
+              Start Your Quest
+            </a>
+            <a
+              href="{% url 'login' %}"
+              class="text-lg px-8 py-4 border border-slate-200 rounded-xl font-bold bg-white hover:bg-slate-50 transition"
+            >
+              Log In
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="container mx-auto px-4 py-20 bg-white/50 rounded-3xl mb-20"
+      >
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div
+            class="p-8 bg-white border-2 border-blue-50 rounded-3xl shadow-sm hover:border-blue-200 transition"
+          >
+            <div
+              class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-white mb-6"
+            >
+              <i class="fas fa-bullseye text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Track Applications</h3>
+            <p class="text-slate-600">
+              Organize everything in one place. From wishlist to offer letter.
+            </p>
+          </div>
+          <div
+            class="p-8 bg-white border-2 border-purple-50 rounded-3xl shadow-sm hover:border-purple-200 transition"
+          >
+            <div
+              class="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center text-white mb-6"
+            >
+              <i class="fas fa-bolt text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Earn XP</h3>
+            <p class="text-slate-600">
+              Gamify your progress. Level up as you apply and interview.
+            </p>
+          </div>
+          <div
+            class="p-8 bg-white border-2 border-orange-50 rounded-3xl shadow-sm hover:border-orange-200 transition"
+          >
+            <div
+              class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center text-white mb-6"
+            >
+              <i class="fas fa-fire text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Build Streaks</h3>
+            <p class="text-slate-600">
+              Stay consistent daily. Momentum is your best friend.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="container mx-auto px-4 py-20">
+        <div
+          class="max-w-4xl mx-auto bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl p-12 text-center text-white shadow-xl"
+        >
+          <i class="fas fa-trophy text-6xl mb-6 opacity-90"></i>
+          <h2 class="text-4xl font-bold mb-4">Ready to Start Your Quest?</h2>
+          <p class="text-xl mb-8 opacity-90">
+            Join Job Quest today and transform your job search into an
+            adventure.
+          </p>
+          {% if user.is_authenticated %}
+          <a
+            href="{% url 'dashboard' %}"
+            class="inline-block bg-white text-purple-600 hover:bg-slate-100 text-lg px-8 py-4 rounded-xl font-bold transition"
+          >
+            Go to Dashboard
+          </a>
+          {% else %}
+          <a
+            href="{% url 'signup' %}"
+            class="inline-block bg-white text-purple-600 hover:bg-slate-100 text-lg px-8 py-4 rounded-xl font-bold transition"
+          >
+            Get Started for Free
+          </a>
+          {% endif %}
+        </div>
+      </section>
+      {% endblock %}
+    </main>
+
+    <footer
+      class="mt-20 border-t border-slate-200 bg-white py-8 text-center text-slate-500 text-sm"
+    >
+      © 2025 Job Quest. Level up your career search.
+    </footer>
+
+    <script>
+      // Theme switching functionality
+      function setTheme(theme) {
+        localStorage.setItem('theme', theme);
+        applyTheme(theme);
+      }
+
+      function applyTheme(theme) {
+        const html = document.documentElement;
+        
+        if (theme === 'dark') {
+          html.classList.add('dark');
+          document.body.classList.remove('bg-gradient-to-br', 'from-slate-50', 'via-blue-50', 'to-purple-50');
+          document.body.classList.add('bg-slate-900', 'dark');
+        } else if (theme === 'light') {
+          html.classList.remove('dark');
+          document.body.classList.remove('bg-slate-900', 'dark');
+          document.body.classList.add('bg-gradient-to-br', 'from-slate-50', 'via-blue-50', 'to-purple-50');
+        } else if (theme === 'system') {
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (prefersDark) {
+            html.classList.add('dark');
+            document.body.classList.remove('bg-gradient-to-br', 'from-slate-50', 'via-blue-50', 'to-purple-50');
+            document.body.classList.add('bg-slate-900', 'dark');
+          } else {
+            html.classList.remove('dark');
+            document.body.classList.remove('bg-slate-900', 'dark');
+            document.body.classList.add('bg-gradient-to-br', 'from-slate-50', 'via-blue-50', 'to-purple-50');
+          }
+        }
+      }
+
+      // Initialize theme on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme') || 'system';
+        applyTheme(savedTheme);
+      });
+
+      // Listen for system theme changes
+      if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+          const savedTheme = localStorage.getItem('theme');
+          if (savedTheme === 'system') {
+            applyTheme('system');
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
