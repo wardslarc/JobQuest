@@ -10,6 +10,23 @@ class Application(models.Model):
         ('rejected', 'Rejected'),
     ]
     
+    WORK_SETUP_CHOICES = [
+        ('remote', 'Remote'),
+        ('hybrid', 'Hybrid'),
+        ('on-site', 'On-site'),
+        ('flexible', 'Flexible'),
+    ]
+    
+    SOURCE_CHOICES = [
+        ('linkedin', 'LinkedIn'),
+        ('indeed', 'Indeed'),
+        ('glassdoor', 'Glassdoor'),
+        ('company_website', 'Company Website'),
+        ('recruiter', 'Recruiter'),
+        ('referral', 'Referral'),
+        ('other', 'Other'),
+    ]
+    
     XP_VALUES = {
         'wishlist': 5,
         'applied': 20,
@@ -24,6 +41,8 @@ class Application(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='wishlist')
     salary = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=200, blank=True)
+    work_setup = models.CharField(max_length=20, choices=WORK_SETUP_CHOICES, default='flexible', blank=True)
+    source = models.CharField(max_length=20, choices=SOURCE_CHOICES, default='other', blank=True)
     notes = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

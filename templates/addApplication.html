@@ -76,6 +76,24 @@
           </div>
 
           <div class="space-y-2">
+            <label for="work_setup" class="text-sm font-semibold text-slate-700"
+              >Work Setup</label
+            >
+            <select
+              name="work_setup"
+              id="work_setup"
+              class="w-full px-4 py-2 border border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-blue-500 outline-none transition appearance-none"
+            >
+              <option value="flexible">Flexible</option>
+              <option value="remote">Remote</option>
+              <option value="hybrid">Hybrid</option>
+              <option value="on-site">On-site</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
             <label for="salary" class="text-sm font-semibold text-slate-700"
               >Salary</label
             >
@@ -83,9 +101,28 @@
               type="text"
               name="salary"
               id="salary"
-              placeholder="e.g., "
+              placeholder="e.g., $120,000 - $150,000"
               class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition"
             />
+          </div>
+
+          <div class="space-y-2">
+            <label for="source" class="text-sm font-semibold text-slate-700"
+              >Source</label
+            >
+            <select
+              name="source"
+              id="source"
+              class="w-full px-4 py-2 border border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-blue-500 outline-none transition appearance-none"
+            >
+              <option value="other">Other</option>
+              <option value="linkedin">LinkedIn</option>
+              <option value="indeed">Indeed</option>
+              <option value="glassdoor">Glassdoor</option>
+              <option value="company_website">Company Website</option>
+              <option value="recruiter">Recruiter</option>
+              <option value="referral">Referral</option>
+            </select>
           </div>
         </div>
 

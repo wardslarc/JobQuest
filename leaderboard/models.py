@@ -42,12 +42,14 @@ class UserStats(models.Model):
         """Update all stats for the user"""
         applications = Application.objects.filter(user=self.user)
         
-        # Calculate total XP
-        self.total_xp = sum(app.get_xp() for app in applications) + (
+        # Calculate total XP from applications and achievements
+        app_xp = sum(app.get_xp() for app in applications)
+        achievement_xp = (
             UserAchievement.objects.filter(user=self.user).aggregate(
                 total=Sum('achievement__points')
             )['total'] or 0
         )
+        self.total_xp = app_xp + achievement_xp
         
         # Count applications
         self.total_applications = applications.count()
@@ -58,8 +60,6 @@ class UserStats(models.Model):
         
         # Calculate level
         self.level = self.calculate_level(self.total_xp)
-        
-        self.save()
 
 
 class Milestone(models.Model):
