@@ -8,8 +8,8 @@ from resumeapp.models import Application, UserAchievement
 def leaderboard_view(request):
     """Display the global leaderboard with rankings"""
     
-    # Get all user stats ordered by XP
-    leaderboard_entries = UserStats.objects.all()
+    # Get all user stats ordered by XP (descending)
+    leaderboard_entries = UserStats.objects.all().order_by('-total_xp')
     
     # Add rank to each entry
     ranked_entries = []
@@ -38,6 +38,7 @@ def leaderboard_view(request):
         'current_user_stats': current_user_stats,
         'current_user_rank': current_user_rank,
         'total_users': leaderboard_entries.count(),
+        'filter_type': 'xp',
     }
     
     return render(request, 'leaderboard_main.html', context)
@@ -135,12 +136,27 @@ def stats_by_filter_view(request, filter_type):
             'is_current_user': request.user.is_authenticated and entry.user == request.user
         })
     
+    # Get current user's stats if authenticated
+    current_user_stats = None
+    current_user_rank = None
+    if request.user.is_authenticated:
+        try:
+            current_user_stats = UserStats.objects.get(user=request.user)
+            current_user_rank = next(
+                (entry['rank'] for entry in ranked_entries if entry['user_stats'].id == current_user_stats.id),
+                None
+            )
+        except UserStats.DoesNotExist:
+            pass
+    
     context = {
         'leaderboard_entries': ranked_entries[:50],
         'title': title,
         'metric': metric,
         'filter_type': filter_type,
         'total_users': leaderboard_entries.count(),
+        'current_user_stats': current_user_stats,
+        'current_user_rank': current_user_rank,
     }
     
     return render(request, 'leaderboard_main.html', context)
